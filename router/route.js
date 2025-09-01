@@ -1,6 +1,6 @@
 const express = require('express');
 const routes = express.Router();
-const {createClient ,getAlluser, deleteuser, updateUser, getSpecificId, authRoute, authenticMiddleware} = require('../controller/control');
+const {createClient ,getAlluser, deleteuser, updateUser, getSpecificId, authRoute, authenticMiddleware, deleteAll} = require('../controller/control');
 
 //const {createnewUser} = require('../controller/control');
 //createnewUser
@@ -13,5 +13,6 @@ routes.put('/updateUser/:userId', updateUser);
 routes.get('/get_Id/:userId',getSpecificId);
 routes.post('/login',authRoute);
 routes.get('/authMiddle', authenticMiddleware)
+routes.delete('/allDeleete', deleteAll);
 
 module.exports = routes;

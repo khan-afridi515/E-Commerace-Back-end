@@ -36,8 +36,8 @@ exports.createClient = async(req, res) =>{
 
         const setEmail = await User.findOne({email});
         
-
-        const newUser = await User.create({username, fatherName, contact, email, password, address})
+        const hashPass = await bcrypt.hash(password, 10)
+        const newUser = await User.create({username, fatherName, contact, email, password:hashPass, address})
         
         if(!newUser) return res.status(400).json({wrn:"User did not found"})
         
@@ -49,7 +49,18 @@ exports.createClient = async(req, res) =>{
     
 }
 
+exports.deleteAll = async(req, res)=>{
+    try{
 
+        await User.deleteMany({});
+        const allMembers = User.find();
+
+        res.status(200).json({msg:"All user removed", myDb:allMembers})
+    }
+    catch(err){
+        console.log(err);
+    }
+}
 
 
 exports.getAlluser = async(req, res)=>{
