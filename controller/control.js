@@ -53,7 +53,7 @@ exports.deleteAll = async(req, res)=>{
     try{
 
         await User.deleteMany({});
-        const allMembers = User.find();
+        const allMembers = await User.find();
 
         res.status(200).json({msg:"All user removed", myDb:allMembers})
     }
@@ -125,9 +125,7 @@ exports.authRoute = async(req, res) =>{
         const findEmail = await User.findOne({email});
         if(!findEmail) return res.status(401).json({wrn:"invalid Email"});
 
-    
-
-        const findPassword =  bcrypt.compare(password, findEmail.password);
+        const findPassword = await bcrypt.compare(password, findEmail.password);
  
         if(!findPassword) return res.status(401).json({wrn:"Password does not match"});
         

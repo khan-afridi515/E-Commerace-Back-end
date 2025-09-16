@@ -1,12 +1,13 @@
 const express = require('express');
 const routes = express.Router();
 const {createClient ,getAlluser, deleteuser, updateUser, getSpecificId, authRoute, authenticMiddleware, deleteAll} = require('../controller/control');
+const upload = require('../multer');
 
 //const {createnewUser} = require('../controller/control');
 //createnewUser
 // createnewUser
 
-routes.post('/postUser', createClient);
+routes.post('/postUser', upload.single("img"), createClient);
 routes.get('/getAlluser', getAlluser);
 routes.delete('/dltUser/:user_Id', deleteuser);
 routes.put('/updateUser/:userId', updateUser);

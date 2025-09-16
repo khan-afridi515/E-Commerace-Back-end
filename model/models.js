@@ -7,8 +7,8 @@ const mongoSchema = new mongoose.Schema({
      contact : String,
      email : String,
      password : String,
-     address : String
-
+     address : String,
+     img : String
 }, {timestamps:true})
 
 
