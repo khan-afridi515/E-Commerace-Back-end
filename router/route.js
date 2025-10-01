@@ -10,7 +10,7 @@ const upload = require('../multer');
 routes.post('/postUser', upload.single("img"), createClient);
 routes.get('/getAlluser', getAlluser);
 routes.delete('/dltUser/:user_Id', deleteuser);
-routes.put('/updateUser/:userId', updateUser);
+routes.put('/updateUser/:userId', upload.single("img"), updateUser);
 routes.get('/get_Id/:userId',getSpecificId);
 routes.post('/login',authRoute);
 routes.get('/authMiddle', authenticMiddleware)

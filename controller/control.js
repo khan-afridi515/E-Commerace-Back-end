@@ -1,6 +1,7 @@
 const User = require('../model/models');
 const bcrypt = require("bcryptjs");
-const  jwt = require("jsonwebtoken")
+const  jwt = require("jsonwebtoken");
+const fileOnCloud = require('../cloud');
 
 
 // exports.createnewUser = async(req, res)=>{
@@ -34,10 +35,17 @@ exports.createClient = async(req, res) =>{
     try{
         const {username, fatherName, contact, email, password, address} = req.body;
 
+        let imgUrl = " ";
+
+        if(req.file){
+            let pic = await fileOnCloud(req.file.path);
+            imgUrl = pic.secure_url;
+        }
+
         const setEmail = await User.findOne({email});
         
         const hashPass = await bcrypt.hash(password, 10)
-        const newUser = await User.create({username, fatherName, contact, email, password:hashPass, address})
+        const newUser = await User.create({username, fatherName, contact, email, password:hashPass, address, img:imgUrl})
         
         if(!newUser) return res.status(400).json({wrn:"User did not found"})
         
@@ -91,8 +99,23 @@ exports.deleteuser = async(req,res)=>{
 
 exports.updateUser = async(req, res)=>{
     try{
-        const user_id = req.params.userId
-        const updateuser = await User.findByIdAndUpdate(user_id,req.body,{new:true})
+        const user_id = req.params.userId;
+        const {username} = req.body;
+
+        if(!username) return res.status(400).json({wrn:"please enter name!"})
+        
+        let imageUrl = " ";
+        if(req.file){
+           const paths = await fileOnCloud(req.file.path);
+           imageUrl = paths.secure_url;
+        }
+
+        const newData = {
+          username:username,
+          img:imageUrl
+        }
+
+        const updateuser = await User.findByIdAndUpdate(user_id,newData,{new:true})
         if(!updateuser) return res.status(404).json({wrn:"Data not  found"})
             return res.status(202).json({msg:"data successfully updated",updateData:updateuser})
     }
