@@ -2,6 +2,10 @@ const express = require('express');
 const routes = express.Router();
 const {createClient ,getAlluser, deleteuser, updateUser, getSpecificId, authRoute, authenticMiddleware, deleteAll} = require('../controller/control');
 const upload = require('../multer');
+const { CreateOtp } = require('../forgotPassword/createOtp');
+const { otpVarify } = require('../forgotPassword/varifyOtp');
+const { changePass } = require('../forgotPassword/updatePass');
+
 
 //const {createnewUser} = require('../controller/control');
 //createnewUser
@@ -15,5 +19,8 @@ routes.get('/get_Id/:userId',getSpecificId);
 routes.post('/login',authRoute);
 routes.get('/authMiddle', authenticMiddleware)
 routes.delete('/allDeleete', deleteAll);
+routes.post('/makeOtp', CreateOtp);
+routes.post('/checkOtp', otpVarify);
+routes.put("/setPass/:tokens", changePass);
 
 module.exports = routes;
